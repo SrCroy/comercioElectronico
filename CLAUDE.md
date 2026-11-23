@@ -24,11 +24,12 @@ docker compose exec -u www-data wordpress wp mb portada [--forzar] [--exportar=a
 docker compose exec -u www-data wordpress wp mb demo [--borrar]     # create/remove the 8 demo products
 docker compose logs -f wordpress
 ./scripts/backup.sh                                  # DB + uploads → backups/
+docker compose exec wordpress php -l wp-content/plugins/mb-core/includes/cli.php   # quick PHP syntax check (the only "lint" available)
 ```
 
 `docker compose down -v` deletes the database and all products.
 
-During local development the theme and plugin are **bind-mounted** into the container, so PHP/CSS edits show up right away with no rebuild. Content in `mb-core/contenido/*.html` reaches the database only after you run `wp mb instalar --rehacer`. On a server that is already installed, bump that page's number in `MB_CLI::VERSION_PAGINAS`; the next `wp mb instalar` (which runs on every Railway deploy) then rewrites only that page, once. The site front page is the WooCommerce **Tienda** (shop) page, set in `MB_CLI::paginas()`. The Elementor "Inicio" page is still generated in PHP (`includes/elementor.php`) at `/inicio/`, but it is no longer the front page; changes to it reach the database only after you run `wp mb portada --forzar`.
+During local development the theme and plugin are **bind-mounted** into the container, so PHP/CSS edits show up right away with no rebuild. Content in `mb-core/contenido/*.html` reaches the database only after you run `wp mb instalar --rehacer`. On a server that is already installed, bump that page's number in `MB_CLI::VERSION_PAGINAS`; the next `wp mb instalar` (which runs on every Railway deploy) then rewrites only that page, once. Those HTML files use placeholders that `MB_CLI::paginas()` replaces at install time (`{{TIENDA}}`, `{{REPARACIONES}}`, `{{GARANTIAS}}`, `{{CATEGORIAS}}`, `{{ASSETS}}`), so use them instead of hard-coded URLs. The site front page is the WooCommerce **Tienda** (shop) page, set in `MB_CLI::paginas()`. The Elementor "Inicio" page is still generated in PHP (`includes/elementor.php`) at `/inicio/`, but it is no longer the front page; changes to it reach the database only after you run `wp mb portada --forzar`.
 
 ## Architecture
 
