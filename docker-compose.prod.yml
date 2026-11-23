@@ -1,0 +1,57 @@
+# Mechanical Bull — ajustes para el servidor público (VPS).
+# Se activa poniendo en el .env del servidor:
+#   COMPOSE_FILE=docker-compose.yml:docker-compose.prod.yml
+# Así todos los comandos (docker compose ..., ./scripts/setup.sh) usan esta configuración.
+
+services:
+  # Caddy recibe el tráfico de internet y saca el certificado HTTPS gratis (Let's Encrypt).
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    depends_on:
+      - wordpress
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    environment:
+      DOMAIN: ${DOMAIN}
+    volumes:
+      - ./config/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+  wordpress:
+    # WordPress ya no se expone directo: solo se entra por Caddy (HTTPS).
+    ports: !reset []
+    environment:
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      SMTP_FROM: ${SMTP_FROM:-}
+      WORDPRESS_CONFIG_EXTRA: |
+        define('WP_ENVIRONMENT_TYPE', 'production');
+        define('FS_METHOD', 'direct');
+        define('WP_MEMORY_LIMIT', '256M');
+        define('DISALLOW_FILE_EDIT', true);
+        if (($$_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https') { $$_SERVER['HTTPS'] = 'on'; }
+        define('MB_SMTP_HOST', getenv('SMTP_HOST') ?: '');
+        define('MB_SMTP_PORT', (int) (getenv('SMTP_PORT') ?: 587));
+        define('MB_SMTP_USER', getenv('SMTP_USER') ?: '');
+        define('MB_SMTP_PASSWORD', getenv('SMTP_PASSWORD') ?: '');
+        define('MB_SMTP_FROM', getenv('SMTP_FROM') ?: '');
+
+  # phpMyAdmin solo escucha dentro del servidor. Para usarlo, abre un túnel SSH
+  # (ver docs/DESPLIEGUE.md) y entra a http://localhost:8081
+  phpmyadmin:
+    ports: !override
+      - "127.0.0.1:${PMA_PORT:-8081}:80"
+
+  # Mailpit no hace falta en producción: los correos salen por SMTP real.
+  mailpit:
+    profiles: ["dev"]
+
+volumes:
+  caddy_data:
+  caddy_config:

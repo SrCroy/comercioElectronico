@@ -1,0 +1,123 @@
+<!-- wp:html -->
+<section class="mb-hero">
+	<div class="mb-hero__grid">
+		<div class="mb-hero__texto">
+			<p class="mb-hero__kicker"><span></span>Repuestos · Reparación · Garantía real</p>
+			<h1>Tu equipo vuelve <span>a la vida.</span></h1>
+			<p class="mb-hero__lead">Repuestos de calidad para celulares Android y iPhone, laptops y PC Gamer. Y si prefieres que lo reparemos nosotros, tráelo al local o envíalo desde cualquier parte del país.</p>
+			[mb_buscador]
+			<div class="mb-hero__chips">
+				<span>Populares:</span>
+				<a href="{{TIENDA}}?s=iPhone&amp;post_type=product">iPhone</a>
+				<a href="{{TIENDA}}?s=Galaxy&amp;post_type=product">Samsung Galaxy</a>
+				<a href="{{TIENDA}}?s=Redmi&amp;post_type=product">Xiaomi Redmi</a>
+				<a href="{{TIENDA}}?s=RAM&amp;post_type=product">Memoria RAM</a>
+				<a href="{{TIENDA}}?s=SSD&amp;post_type=product">SSD</a>
+			</div>
+		</div>
+		<div class="mb-hero__visual" aria-hidden="true">
+			<div class="mb-hero__circulo"></div>
+			<img src="{{ASSETS}}/isotipo-blanco.png" alt="" width="600" height="450">
+			<div class="mb-flotante mb-flotante--1"><strong>Hasta 12 meses</strong><span>de garantía por escrito</span></div>
+			<div class="mb-flotante mb-flotante--2"><strong>Diagnóstico gratis</strong><span>si apruebas la reparación</span></div>
+			<div class="mb-flotante mb-flotante--3"><strong>Envíos</strong><span>a los 14 departamentos</span></div>
+		</div>
+	</div>
+</section>
+<!-- /wp:html -->
+
+<!-- wp:html -->
+<section class="mb-beneficios">
+	<div class="mb-beneficio">
+		<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 3v6c0 5-3.4 9.3-8 11-4.6-1.7-8-6-8-11V5zm-1.2 13.2l5.4-5.4-1.4-1.4-4 4-1.8-1.8-1.4 1.4z"/></svg>
+		<div><strong>Garantía real</strong><span>Hasta 12 meses, por escrito</span></div>
+	</div>
+	<div class="mb-beneficio">
+		<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 6h12v10H2zM14 9h4.5l3.5 3.5V16h-8zM6 19.5a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm11 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg>
+		<div><strong>Envíos a todo el país</strong><span>O retira gratis en San Miguel</span></div>
+	</div>
+	<div class="mb-beneficio">
+		<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 5h20v14H2zm0 3v3h20V8zm3 7v2h6v-2z"/></svg>
+		<div><strong>Paga como prefieras</strong><span>Transferencia, Chivo o efectivo</span></div>
+	</div>
+	<div class="mb-beneficio">
+		<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.7 18.6l-6.3-6.3a6 6 0 0 0-7.7-7.7l3.6 3.6-2.8 2.8L4.9 7.4a6 6 0 0 0 7.7 7.7l6.3 6.3a2 2 0 0 0 2.8-2.8z"/></svg>
+		<div><strong>Técnicos con experiencia</strong><span>Te decimos la verdad sobre tu equipo</span></div>
+	</div>
+</section>
+<!-- /wp:html -->
+
+<!-- wp:html -->
+<div class="mb-seccion-titulo">
+	<p class="mb-etiqueta">Catálogo</p>
+	<h2>Busca por tipo de equipo</h2>
+</div>
+<!-- /wp:html -->
+
+<!-- wp:shortcode -->
+[product_categories ids="{{CATEGORIAS}}" columns="4" hide_empty="0" orderby="include"]
+<!-- /wp:shortcode -->
+
+<!-- wp:html -->
+<div class="mb-seccion-titulo">
+	<p class="mb-etiqueta">Marcas</p>
+	<h2>Repuestos para las marcas que usas</h2>
+</div>
+[mb_marcas]
+<!-- /wp:html -->
+
+<!-- wp:html -->
+<div class="mb-seccion-titulo mb-seccion-titulo--fila">
+	<div>
+		<p class="mb-etiqueta">Novedades</p>
+		<h2>Lo más nuevo en la tienda</h2>
+	</div>
+	<a class="mb-enlace-flecha" href="{{TIENDA}}">Ver todos los repuestos →</a>
+</div>
+<!-- /wp:html -->
+
+<!-- wp:shortcode -->
+[products limit="8" columns="4" orderby="date" order="DESC"]
+<!-- /wp:shortcode -->
+
+<!-- wp:html -->
+<section class="mb-taller">
+	<div class="mb-taller__texto">
+		<p class="mb-etiqueta mb-etiqueta--clara">Taller de reparación</p>
+		<h2>¿Se arruinó tu equipo? Nosotros lo reparamos.</h2>
+		<p>Tráelo al local o envíalo desde tu departamento. Te damos el diagnóstico, tú apruebas el precio y te lo devolvemos funcionando, con garantía.</p>
+		<ul class="mb-servicios">
+			<li>Cambio de pantalla</li>
+			<li>Cambio de batería</li>
+			<li>Puerto de carga</li>
+			<li>Equipos mojados</li>
+			<li>Reparación de placa</li>
+			<li>Laptops y PC Gamer</li>
+		</ul>
+		<div class="mb-hero__botones">
+			[mb_whatsapp texto="Cotizar mi reparación" mensaje="Hola Mechanical Bull, quiero cotizar una reparación. Equipo: , Modelo: , Falla: "]
+			<a class="mb-boton mb-boton--borde" href="{{REPARACIONES}}">Cómo funciona</a>
+		</div>
+	</div>
+	<ol class="mb-taller__pasos">
+		<li><strong>Nos cuentas la falla</strong><span>Por WhatsApp, con marca y modelo.</span></li>
+		<li><strong>Diagnóstico</strong><span>Gratis si apruebas la reparación.</span></li>
+		<li><strong>Tú decides</strong><span>No reparamos nada sin tu autorización.</span></li>
+		<li><strong>Listo, con garantía</strong><span>Retiras en el local o te lo enviamos.</span></li>
+	</ol>
+</section>
+<!-- /wp:html -->
+
+<!-- wp:html -->
+<section class="mb-cta">
+	<div>
+		<h2>¿No encuentras tu pieza?</h2>
+		<p>Muchas piezas las traemos por encargo. Escríbenos el modelo de tu equipo y te cotizamos.</p>
+	</div>
+	<div>[mb_whatsapp texto="Cotizar por WhatsApp" mensaje="Hola Mechanical Bull, busco una pieza para mi equipo: "]</div>
+</section>
+<!-- /wp:html -->
+
+<!-- wp:html -->
+<blockquote class="mb-lema">«Una reparación, un cliente feliz.»</blockquote>
+<!-- /wp:html -->

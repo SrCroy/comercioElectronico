@@ -1,0 +1,11 @@
+# Caddy: HTTPS automático para el dominio de la tienda.
+# DOMAIN viene del archivo .env (ejemplo: DOMAIN=mechanicalbull.com)
+
+www.{$DOMAIN} {
+	redir https://{$DOMAIN}{uri} permanent
+}
+
+{$DOMAIN} {
+	encode zstd gzip
+	reverse_proxy wordpress:80
+}
