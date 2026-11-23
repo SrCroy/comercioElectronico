@@ -99,7 +99,8 @@ Reglas de protección del margen:
 
 - Piezas con envío: **pago completo antes de despachar**.
 - Piezas por encargo: **anticipo 50 %** (el cobro parcial automático requiere un plugin de depósitos; se evalúa en Fase 1).
-- Reparaciones: se paga al aprobar presupuesto o al entregar.
+- Reparaciones: **50 % al aprobar el presupuesto y 50 % al terminar**, antes de entregar o enviar el equipo.
+- Equipos enviados al taller: deben venir **en caja o en bolsa bien sellada**; no se reciben sueltos o mal empacados.
 - Piezas por encargo **no tienen devolución**, salvo defecto de fábrica.
 
 ## 7. Facturación

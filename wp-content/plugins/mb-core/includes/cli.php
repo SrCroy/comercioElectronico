@@ -19,7 +19,8 @@ class MB_CLI {
 	 * Súbela al cambiar el archivo para que `wp mb instalar` (en cada despliegue) la reescriba en el servidor.
 	 */
 	private const VERSION_PAGINAS = array(
-		'reparaciones' => 2,
+		'reparaciones'          => 3,
+		'envios-y-devoluciones' => 2,
 	);
 
 	/** Imagen de cada producto de ejemplo (en assets/productos del tema). */
@@ -512,10 +513,11 @@ class MB_CLI {
 			}
 		}
 
-		$inicio = get_page_by_path( 'inicio' );
-		if ( $inicio ) {
+		// La portada del sitio es la Tienda: quien entra ve los productos de una vez.
+		$tienda = wc_get_page_id( 'shop' );
+		if ( $tienda > 0 ) {
 			update_option( 'show_on_front', 'page' );
-			update_option( 'page_on_front', $inicio->ID );
+			update_option( 'page_on_front', $tienda );
 		}
 		WP_CLI::log( '✔ Páginas: Inicio, Tienda, Reparaciones, Garantías, Envíos y devoluciones, Contacto' );
 	}

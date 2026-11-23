@@ -422,8 +422,7 @@ final class MB_Portada_Elementor {
 			'settings' => array( 'hide_title' => 'yes', 'template' => 'elementor_header_footer' ),
 		) );
 
-		update_option( 'show_on_front', 'page' );
-		update_option( 'page_on_front', $id );
+		// No se fija como portada: la portada del sitio es la Tienda (ver MB_CLI::paginas()).
 		return (int) $id;
 	}
 
