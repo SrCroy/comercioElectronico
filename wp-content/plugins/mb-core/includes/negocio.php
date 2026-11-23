@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
 
 function mb_dato( string $clave ): string {
 	$defaults = array(
-		'whatsapp'  => '50300000000',
+		'whatsapp'  => '50360450515',
 		'direccion' => 'Km 144, Carretera al Cuco, Cantón El Jute, San Miguel, El Salvador',
 		'horario'   => 'Lunes a viernes 8:00 a. m. – 5:00 p. m. · Sábado 8:00 a. m. – 12:00 m.',
 		'email'     => (string) get_option( 'admin_email' ),

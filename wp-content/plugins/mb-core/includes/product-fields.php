@@ -203,11 +203,28 @@ add_action( 'woocommerce_after_add_to_cart_form', static function (): void {
 		);
 	}
 	echo '</ul>';
-
-	if ( function_exists( 'mb_whatsapp_url' ) ) {
-		printf(
-			'<a class="mb-boton mb-boton--whatsapp mb-boton--bloque" href="%s" target="_blank" rel="noopener">¿Es compatible con tu equipo? Pregúntanos</a>',
-			esc_url( mb_whatsapp_url( sprintf( 'Hola Mechanical Bull, ¿la pieza "%s" es compatible con mi equipo? Mi modelo es: ', $product->get_name() ) ) )
-		);
-	}
 } );
+
+/**
+ * Botón "Preguntar por WhatsApp" en la ficha de cada producto, con el nombre, precio y enlace ya escritos.
+ * Va en el resumen (después de "Añadir al carrito") para que aparezca también en productos agotados,
+ * que no muestran el formulario de compra.
+ */
+add_action( 'woocommerce_single_product_summary', static function (): void {
+	global $product;
+	if ( ! $product instanceof WC_Product || ! function_exists( 'mb_whatsapp_url' ) ) {
+		return;
+	}
+	$precio  = wp_strip_all_tags( html_entity_decode( wc_price( (float) wc_get_price_to_display( $product ) ) ) );
+	$mensaje = sprintf(
+		"Hola Mechanical Bull, quiero preguntar por este producto:\n%s%s\n%s\n\nMi consulta: ",
+		$product->get_name(),
+		$product->get_price() !== '' ? ' (' . $precio . ')' : '',
+		get_permalink( $product->get_id() )
+	);
+	printf(
+		'<div class="mb-preguntar-wa"><a class="mb-boton mb-boton--whatsapp mb-boton--bloque" href="%s" target="_blank" rel="noopener">Preguntar por WhatsApp</a><small>¿Dudas de compatibilidad, precio o disponibilidad? Te atendemos al %s</small></div>',
+		esc_url( mb_whatsapp_url( $mensaje ) ),
+		esc_html( function_exists( 'mb_telefono_legible' ) ? mb_telefono_legible() : '' )
+	);
+}, 31 );

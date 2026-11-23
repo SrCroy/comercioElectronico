@@ -245,6 +245,11 @@ class MB_CLI {
 		foreach ( array( 'whatsapp', 'direccion', 'horario', 'email', 'mapa' ) as $clave ) {
 			add_option( 'mb_' . $clave, mb_dato( $clave ) );
 		}
+		// Instalaciones antiguas guardaron el número de relleno: se cambia por el real (un número puesto a mano no se toca).
+		if ( '50300000000' === get_option( 'mb_whatsapp' ) ) {
+			delete_option( 'mb_whatsapp' );
+			add_option( 'mb_whatsapp', mb_dato( 'whatsapp' ) );
+		}
 
 		// Borra el contenido de ejemplo de WordPress.
 		foreach ( array( 'hola-mundo', 'hello-world' ) as $slug ) {

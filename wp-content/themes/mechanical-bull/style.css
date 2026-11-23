@@ -792,3 +792,7 @@ a:hover, a:focus { color: var(--mb-rojo); }
 @media (max-width: 767px) {
 	.elementor .mb-el-cta.e-con, .elementor .mb-el-taller.e-con { max-width: calc(100% - 24px); }
 }
+
+/* Ficha de producto: botón "Preguntar por WhatsApp" */
+.mb-preguntar-wa { margin: 14px 0 18px; }
+.mb-preguntar-wa small { display: block; margin-top: 8px; color: var(--mb-gris); font-size: .85rem; text-align: center; }
