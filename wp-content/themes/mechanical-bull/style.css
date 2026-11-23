@@ -577,6 +577,18 @@ a:hover, a:focus { color: var(--mb-rojo); }
 .mb-mapa iframe { display: block; width: 100%; height: 420px; border: 0; }
 @media (max-width: 768px) { .mb-contacto { grid-template-columns: 1fr; } }
 
+/* Contacto: nuestro equipo */
+.mb-equipo { margin-top: 56px; }
+.mb-equipo__sub { max-width: 620px; margin: .6em auto 0 !important; color: var(--mb-gris); }
+.mb-equipo__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.mb-persona { background: #fff; border: 1px solid var(--mb-gris-claro); border-radius: calc(var(--mb-radio) + 4px); padding: clamp(22px, 3vw, 30px); text-align: center; transition: transform .25s, box-shadow .25s; }
+.mb-persona:hover { transform: translateY(-3px); box-shadow: var(--mb-sombra); }
+.mb-persona__inicial { display: inline-grid; place-items: center; width: 76px; height: 76px; margin-bottom: 14px; border-radius: 50%; background: var(--mb-negro); color: #fff; font-family: var(--mb-fuente-titulos); font-size: 1.6rem; font-weight: 700; box-shadow: 0 0 0 4px #fff, 0 0 0 6px var(--mb-rojo); }
+.mb-persona h3 { font-size: 1.15rem; margin: 0 0 .4em !important; }
+.mb-persona__cargo { margin: 0 !important; font-weight: 700; color: var(--mb-rojo); text-transform: uppercase; letter-spacing: .06em; font-size: .85rem; }
+.mb-persona__titulo { margin: .3em 0 0 !important; color: var(--mb-gris); font-size: .92rem; }
+@media (max-width: 768px) { .mb-equipo__grid { grid-template-columns: 1fr; } }
+
 /* Campos de Crédito Fiscal: obligatorios cuando se eligen (se valida en el servidor) */
 .mb-ccf .optional { display: none; }
 

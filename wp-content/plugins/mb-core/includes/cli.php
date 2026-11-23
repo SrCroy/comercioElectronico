@@ -22,6 +22,7 @@ class MB_CLI {
 		'reparaciones'          => 3,
 		'envios-y-devoluciones' => 2,
 		'garantias'             => 3,
+		'contacto'              => 2,
 	);
 
 	/**
