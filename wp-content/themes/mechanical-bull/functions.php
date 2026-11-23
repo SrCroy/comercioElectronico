@@ -97,6 +97,22 @@ add_action( 'wp_footer', static function (): void {
 	);
 } );
 
+/* ---------- Ícono de cuenta de la cabecera: siempre a Mi cuenta ---------- */
+// Sin sesión abre el acceso/registro de la tienda (no el login de WordPress); con sesión, el perfil del cliente.
+// Astra deja vacío el enlace con sesión iniciada y manda a wp-login.php sin sesión: se fija aquí, sin depender del panel.
+$mb_enlace_cuenta = static function (): array {
+	$url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'myaccount' ) : wp_login_url();
+	if ( ! is_user_logged_in() && function_exists( 'is_account_page' ) && ! is_account_page() ) {
+		global $wp;
+		$url = add_query_arg( 'volver', rawurlencode( home_url( $wp->request ? '/' . $wp->request . '/' : '/' ) ), $url );
+	}
+	return array( 'url' => $url, 'new_tab' => false, 'link_rel' => '' );
+};
+add_filter( 'astra_get_option_header-account-login-link', $mb_enlace_cuenta );
+add_filter( 'astra_get_option_header-account-logout-link', $mb_enlace_cuenta );
+add_filter( 'astra_get_option_header-account-action-type', static fn() => 'link' );
+add_filter( 'astra_get_option_header-account-logout-action', static fn() => 'link' );
+
 /* ---------- Imagen de marca para productos sin foto ---------- */
 add_filter( 'woocommerce_placeholder_img_src', static fn() => get_stylesheet_directory_uri() . '/assets/placeholder.jpg' );
 

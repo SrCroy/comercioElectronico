@@ -319,6 +319,10 @@ add_action( 'woocommerce_created_customer', static function ( int $uid ): void {
 	update_user_meta( $uid, 'mb_telefono', $telefono );
 	update_user_meta( $uid, 'mb_verificar_correo', '1' );
 	update_user_meta( $uid, 'mb_verificar_telefono', '1' );
+	$volver = mb_volver_valido( $_POST['mb_volver'] ?? '' ); // phpcs:ignore WordPress.Security.NonceVerification
+	if ( $volver ) {
+		update_user_meta( $uid, 'mb_volver', $volver );
+	}
 
 	mb_limite_envio( $uid, 'correo' );
 	mb_enviar_codigo_correo( $uid, true );
@@ -367,13 +371,73 @@ add_filter( 'woocommerce_account_menu_items', static function ( array $items ): 
 add_filter( 'woocommerce_endpoint_' . MB_EP_VERIFICAR . '_title', static fn() => 'Verifica tu cuenta' );
 add_filter( 'woocommerce_endpoint_' . MB_EP_CONTRASENA . '_title', static fn() => 'Cambiar contraseña' );
 
-/** Mientras falte verificar, Mi cuenta y el pago llevan a "Verificar cuenta". */
+/* ================================================================== */
+/* Ver productos con la sesión iniciada                                */
+/* ================================================================== */
+
+/** Dirección de regreso (?volver=) si es de esta misma tienda, o ''. */
+function mb_volver_valido( $url ): string {
+	$url = is_string( $url ) ? esc_url_raw( wp_unslash( $url ) ) : '';
+	return $url ? (string) wp_validate_redirect( $url, '' ) : '';
+}
+
+/** La tienda se ve sin cuenta; para abrir un producto hay que iniciar sesión (y volver a él después). */
+add_action( 'template_redirect', static function (): void {
+	if ( is_user_logged_in() || ! is_product() ) {
+		return;
+	}
+	wp_safe_redirect( add_query_arg( 'volver', rawurlencode( (string) get_permalink() ), wc_get_page_permalink( 'myaccount' ) ) );
+	exit;
+}, 9 );
+
+/** Aviso arriba del acceso/registro cuando viene de un producto. */
+add_action( 'woocommerce_before_customer_login_form', static function (): void {
+	$volver = mb_volver_valido( $_GET['volver'] ?? '' ); // phpcs:ignore WordPress.Security.NonceVerification
+	if ( $volver && url_to_postid( $volver ) && 'product' === get_post_type( url_to_postid( $volver ) ) ) {
+		wc_print_notice( 'Inicia sesión o crea tu cuenta gratis para ver este producto. Al entrar te llevamos directo a él.', 'notice' );
+	}
+} );
+
+/** Los formularios de acceso y registro recuerdan a dónde volver. */
+$mb_campo_volver = static function (): void {
+	$volver = mb_volver_valido( $_REQUEST['volver'] ?? $_POST['mb_volver'] ?? '' ); // phpcs:ignore WordPress.Security.NonceVerification
+	if ( $volver ) {
+		printf( '<input type="hidden" name="mb_volver" value="%s">', esc_attr( $volver ) );
+	}
+};
+add_action( 'woocommerce_login_form_end', $mb_campo_volver );
+add_action( 'woocommerce_register_form_end', $mb_campo_volver );
+
+add_filter( 'woocommerce_login_redirect', static function ( $redirect, $user ) {
+	$volver = mb_volver_valido( $_POST['mb_volver'] ?? '' ); // phpcs:ignore WordPress.Security.NonceVerification
+	if ( $user instanceof WP_User && mb_verificacion_pendiente( $user->ID ) ) {
+		if ( $volver ) {
+			update_user_meta( $user->ID, 'mb_volver', $volver );
+		}
+		return wc_get_account_endpoint_url( MB_EP_VERIFICAR );
+	}
+	return $volver ?: $redirect;
+}, 20, 2 );
+
+/** Los enlaces de "iniciar sesión" del sitio llevan a Mi cuenta, no al login de WordPress (salvo para entrar al panel). */
+add_filter( 'login_url', static function ( $url, $redirect ) {
+	if ( is_admin() || ! function_exists( 'wc_get_page_permalink' ) || ( $redirect && str_contains( (string) $redirect, '/wp-admin' ) ) ) {
+		return $url;
+	}
+	$cuenta = wc_get_page_permalink( 'myaccount' );
+	return $redirect ? add_query_arg( 'volver', rawurlencode( (string) $redirect ), $cuenta ) : $cuenta;
+}, 10, 2 );
+
+/** Mientras falte verificar, Mi cuenta, los productos y el pago llevan a "Verificar cuenta". */
 add_action( 'template_redirect', static function (): void {
 	if ( ! is_user_logged_in() || ! mb_verificacion_pendiente() ) {
 		return;
 	}
-	if ( ! ( is_account_page() || is_checkout() ) || is_wc_endpoint_url( MB_EP_VERIFICAR ) || is_wc_endpoint_url( 'customer-logout' ) ) {
+	if ( ! ( is_account_page() || is_checkout() || is_product() ) || is_wc_endpoint_url( MB_EP_VERIFICAR ) || is_wc_endpoint_url( 'customer-logout' ) ) {
 		return;
+	}
+	if ( is_product() ) {
+		update_user_meta( get_current_user_id(), 'mb_volver', (string) get_permalink() );
 	}
 	if ( is_checkout() ) {
 		wc_add_notice( 'Antes de comprar con tu cuenta, verifica tu correo' . ( mb_falta_telefono( get_current_user_id() ) ? ' y tu teléfono.' : '.' ), 'notice' );
@@ -487,8 +551,10 @@ add_action( 'template_redirect', static function (): void {
 	} else {
 		wc_add_notice( $exito, 'success' );
 		if ( str_starts_with( $accion, 'verificar_' ) && ! mb_verificacion_pendiente( $uid ) ) {
-			wc_add_notice( '¡Tu cuenta está verificada! Ya puedes comprar y ver tus pedidos.', 'success' );
-			$volver = wc_get_account_endpoint_url( 'dashboard' );
+			wc_add_notice( '¡Tu cuenta está verificada! Ya puedes ver los productos, comprar y ver tus pedidos.', 'success' );
+			// Si llegó desde un producto, vuelve a él.
+			$volver = mb_volver_valido( (string) get_user_meta( $uid, 'mb_volver', true ) ) ?: wc_get_account_endpoint_url( 'dashboard' );
+			delete_user_meta( $uid, 'mb_volver' );
 		}
 	}
 	wp_safe_redirect( $volver );

@@ -261,12 +261,17 @@ class MB_CLI {
 			WP_CLI::log( '· Ajustes generales ya aplicados: se respetan los cambios del panel (forzar con --rehacer)' );
 		}
 
-		// Solo en la primera instalación: no indexar y modo "Próximamente". Si después lo cambias, se respeta.
+		// Solo en la primera instalación: no indexar en buscadores. Si después lo cambias, se respeta.
 		if ( ! get_option( 'mb_instalado' ) ) {
 			update_option( 'blog_public', '0' );
-			update_option( 'woocommerce_coming_soon', 'yes' );
-			update_option( 'woocommerce_store_pages_only', 'no' );
 			update_option( 'mb_instalado', gmdate( 'c' ) );
+		}
+		// Una vez por servidor: la tienda se ve sin cuenta (sin modo "Próximamente"); los productos piden
+		// iniciar sesión (ver cuentas.php). Si después activas "Próximamente" en el panel, se respeta.
+		if ( '1' !== get_option( 'mb_tienda_abierta' ) ) {
+			update_option( 'woocommerce_coming_soon', 'no' );
+			update_option( 'mb_tienda_abierta', '1' );
+			WP_CLI::log( '✔ Tienda abierta al público (sin modo "Próximamente")' );
 		}
 
 		// Datos de contacto (se cambian en Apariencia → Personalizar → Mechanical Bull). add_option no pisa cambios.
