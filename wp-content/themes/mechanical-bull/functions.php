@@ -129,5 +129,10 @@ add_filter( 'body_class', static function ( array $clases ): array {
 	if ( is_page( array( 'reparaciones', 'garantias' ) ) ) {
 		$clases[] = 'mb-reparaciones';
 	}
+	// Acceso / registro (Mi cuenta sin sesión): diseño propio, sin el título "Mi cuenta".
+	if ( function_exists( 'is_account_page' ) && is_account_page() && ! is_user_logged_in()
+		&& ! is_wc_endpoint_url( 'lost-password' ) ) {
+		$clases[] = 'mb-acceso-pagina';
+	}
 	return $clases;
 } );

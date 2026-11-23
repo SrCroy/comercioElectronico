@@ -1079,6 +1079,82 @@ a:hover, a:focus { color: var(--mb-rojo); }
 details > summary.mb-enlace { list-style: none; display: inline; }
 details > summary.mb-enlace::-webkit-details-marker { display: none; }
 
+/* Acceso / registro: panel de marca + una tarjeta a la vez */
+.mb-acceso-pagina .entry-header, .mb-acceso-pagina .ast-breadcrumbs-wrapper { display: none; }
+.mb-acceso-pagina #primary { margin-top: clamp(16px, 4vw, 48px) !important; }
+.mb-acceso {
+	display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+	max-width: 1040px; margin: 0 auto;
+	background: #fff; border-radius: 24px; overflow: hidden;
+	box-shadow: var(--mb-sombra-fuerte);
+}
+.mb-acceso__marca {
+	position: relative; overflow: hidden;
+	display: flex; flex-direction: column; align-items: flex-start;
+	padding: clamp(28px, 4vw, 44px);
+	background:
+		radial-gradient(520px 360px at 50% 46%, rgba(255, 2, 0, .30), transparent 70%),
+		repeating-linear-gradient(135deg, rgba(255, 255, 255, .025) 0 2px, transparent 2px 14px),
+		var(--mb-negro);
+	color: #D8D6D1;
+}
+.mb-acceso__logo { width: 170px; height: auto; }
+.mb-acceso__toro {
+	display: block; width: min(330px, 86%); height: auto; margin: 18px auto 8px;
+	filter: drop-shadow(0 22px 34px rgba(0, 0, 0, .55));
+	animation: mb-toro-entra .7s cubic-bezier(.2, .8, .2, 1) both;
+}
+@keyframes mb-toro-entra { from { opacity: 0; transform: translateY(18px) scale(.94); } to { opacity: 1; transform: none; } }
+.mb-acceso__titulo { font-family: var(--mb-fuente-titulos); font-size: clamp(1.5rem, 2.6vw, 2rem); font-weight: 700; line-height: 1.1; color: #fff; margin: 0 0 14px; }
+.mb-acceso__titulo span { color: var(--mb-rojo); display: block; }
+.mb-acceso__beneficios { list-style: none; margin: 0 !important; padding: 0 !important; display: grid; gap: 10px; }
+.mb-acceso__beneficios li { position: relative; padding-left: 28px; font-size: .95rem; line-height: 1.45; }
+.mb-acceso__beneficios li::before {
+	content: ""; position: absolute; left: 0; top: .15em; width: 18px; height: 18px; border-radius: 50%;
+	background: var(--mb-rojo) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M9.5 16.6L4.9 12l1.4-1.4 3.2 3.2 8.2-8.2 1.4 1.4z'/%3E%3C/svg%3E") center / 12px no-repeat;
+}
+
+.mb-acceso__panel { padding: clamp(26px, 4.5vw, 52px); display: flex; flex-direction: column; justify-content: center; }
+.mb-acceso__panel .woocommerce-notices-wrapper:empty { display: none; }
+.mb-acceso__panel .woocommerce-error, .mb-acceso__panel .woocommerce-info, .mb-acceso__panel .woocommerce-message { margin-bottom: 18px !important; border-radius: var(--mb-radio-sm); }
+.mb-acceso__vista[hidden] { display: none !important; }
+.mb-acceso__vista { animation: mb-vista-entra .3s ease both; }
+@keyframes mb-vista-entra { from { opacity: 0; transform: translateX(10px); } to { opacity: 1; transform: none; } }
+.mb-acceso__vista h2 { font-size: clamp(1.7rem, 3vw, 2.2rem); margin: 0 0 4px !important; }
+.mb-acceso__cambio { margin: 0 0 22px; color: var(--mb-gris); }
+.mb-acceso__cambio a, .mb-acceso__olvido { color: var(--mb-rojo); font-weight: 600; text-decoration: none; }
+.mb-acceso__cambio a:hover, .mb-acceso__olvido:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+/* Los formularios ya no van en cajas con borde: la tarjeta es el contenedor */
+.mb-acceso form.login, .mb-acceso form.register { border: 0 !important; padding: 0 !important; margin: 0 !important; border-radius: 0; box-shadow: none; }
+.mb-acceso .form-row { margin-bottom: 14px; padding: 0 !important; }
+.mb-acceso label { font-weight: 600; font-size: .9rem; color: var(--mb-negro); margin-bottom: 6px; display: inline-block; }
+.mb-acceso .input-text {
+	width: 100%; min-height: 48px; padding: 10px 14px !important;
+	background: var(--mb-fondo) !important; border: 1.5px solid transparent !important; border-radius: 12px !important;
+	transition: border-color .2s, background .2s, box-shadow .2s;
+}
+.mb-acceso .input-text:focus { background: #fff !important; border-color: var(--mb-negro) !important; box-shadow: 0 0 0 4px rgba(14, 14, 14, .06); outline: 0; }
+.mb-acceso .mb-campo-tel__pref { background: var(--mb-gris-claro); border: 0; border-radius: 12px 0 0 12px; }
+.mb-acceso .mb-campo-tel .input-text { border-radius: 0 12px 12px 0 !important; }
+.mb-acceso .show-password-input { top: 50% !important; transform: translateY(-50%); }
+.mb-acceso__fila { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin: 2px 0 18px; }
+.mb-acceso__fila label { margin: 0; font-weight: 500; display: inline-flex; align-items: center; gap: 6px; }
+.mb-acceso .mb-acceso__boton { width: 100%; min-height: 52px; font-size: 1.05rem !important; margin-top: 4px; }
+.mb-acceso .woocommerce-privacy-policy-text p { font-size: .8rem; line-height: 1.5; color: var(--mb-gris); margin: 6px 0 14px; }
+.mb-acceso .woocommerce-privacy-policy-text a { color: var(--mb-negro); }
+.mb-acceso .mb-registro-aviso { margin-top: 0; }
+
+@media (max-width: 860px) {
+	.mb-acceso { grid-template-columns: 1fr; border-radius: 20px; }
+	.mb-acceso__marca { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 4px 14px; padding: 18px 20px; }
+	.mb-acceso__logo { display: none; }
+	.mb-acceso__toro { width: 84px; margin: 0; animation: none; }
+	.mb-acceso__titulo { font-size: 1.3rem; margin: 0; flex: 1; }
+	.mb-acceso__beneficios { display: none !important; }
+}
+@media (prefers-reduced-motion: reduce) { .mb-acceso__toro, .mb-acceso__vista { animation: none; } }
+
 .mb-contrasena { max-width: 520px; }
 .mb-dato-cuenta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 12px 16px; background: var(--mb-fondo); border-radius: var(--mb-radio-sm); }
 .mb-dato-cuenta span:first-child { color: var(--mb-gris); }
