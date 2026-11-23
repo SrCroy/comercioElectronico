@@ -155,6 +155,35 @@ Si un correo no sale, en los *Deploy Logs* aparece `Mechanical Bull: Brevo no pu
 
 ---
 
+## Pago con tarjeta (Wompi El Salvador)
+
+La tienda trae su propia integración con Wompi (no hace falta instalar ningún plugin). El cliente
+elige *Tarjeta de crédito o débito (Wompi)*, paga en la página segura de Wompi y regresa a la tienda.
+El pedido pasa a **Procesando** solo cuando Wompi confirma el pago.
+
+1. Crea tu cuenta de negocio en https://wompi.sv y entra al panel: https://panel.wompi.sv
+2. **Aplicativos** → crea uno (o abre el que tengas) y copia el **App ID** y el **API Secret**.
+3. En Railway, Variables del servicio, agrega:
+
+```
+WOMPI_APP_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+WOMPI_API_SECRET=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+```
+
+   (También se pueden escribir en *WooCommerce → Ajustes → Pagos → Wompi (tarjeta)*; las variables
+   tienen prioridad.) Sin credenciales, Wompi no aparece en el pago.
+
+No hay que configurar el webhook en Wompi: cada enlace de pago lleva la dirección de la tienda.
+
+**Pruebas:** pon el negocio en **modo desarrollo** en el panel de Wompi. Los pagos se aprueban sin
+cobrar (con CVV `111` se simula un rechazo) y el pedido queda **En espera** con la nota
+"pago de PRUEBA". Cuando todo funcione, pasa el negocio a producción.
+
+Si algo falla, en los *Deploy Logs* aparecen líneas que empiezan con `[mb-wompi]`, y cada pedido
+tiene notas con lo que respondió Wompi. Los reembolsos se hacen desde el panel de Wompi.
+
+---
+
 ## Verificar el teléfono de los clientes (SMS o WhatsApp, opcional)
 
 Al registrarse, el cliente siempre verifica su **correo** con un código de 6 dígitos. Para que también
@@ -245,5 +274,6 @@ su -s /bin/bash www-data -c "wp db export /tmp/respaldo.sql" && ls -lh /tmp/resp
 | Log: `no hay conexión con la base de datos` | Que el servicio MySQL se llame `MySQL` (o ajusta las variables) |
 | Log: `falta la variable ...` | Agrega esa variable en el Paso 6 |
 | Se pierden fotos/plugins al redesplegar | Falta el volumen en `/var/www/html/wp-content` |
+| Wompi no aparece en el pago | `WOMPI_APP_ID` y `WOMPI_API_SECRET`, y la moneda de la tienda en USD |
 | No llegan correos | `BREVO_API_KEY` o `RESEND_API_KEY`, y que `MAIL_FROM` esté verificado en ese proveedor; busca `no pudo enviar el correo` en los logs |
 | La página carga sin estilos o redirige mal | `SITE_URL` debe ser exactamente tu dirección con `https://` |

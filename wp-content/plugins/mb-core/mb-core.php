@@ -18,6 +18,7 @@ require_once MB_CORE_DIR . 'includes/negocio.php';
 require_once MB_CORE_DIR . 'includes/roles.php';
 require_once MB_CORE_DIR . 'includes/facturacion.php';
 require_once MB_CORE_DIR . 'includes/pagos.php';
+require_once MB_CORE_DIR . 'includes/wompi.php';
 require_once MB_CORE_DIR . 'includes/taxonomies.php';
 require_once MB_CORE_DIR . 'includes/product-fields.php';
 require_once MB_CORE_DIR . 'includes/correo.php';

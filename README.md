@@ -147,7 +147,7 @@ docker compose down
 |---|---|
 | 0 — Reglas de negocio | ✅ |
 | 1 — Tienda: catálogo, pagos manuales, envíos, factura/CCF | ✅ |
-| 1b — Wompi y PayPal (requiere credenciales) | ⏳ |
+| 1b — Wompi (tarjeta) ✅ · PayPal ⏳ | Wompi listo: falta poner sus credenciales |
 | 2 — Taller: órdenes de reparación y seguimiento | ⏳ |
 | 3 — Precios B2B para técnicos y mayoristas | ⏳ |
 | 4 — Taller ↔ inventario, garantías en "Mi cuenta", avisos WhatsApp | ⏳ |

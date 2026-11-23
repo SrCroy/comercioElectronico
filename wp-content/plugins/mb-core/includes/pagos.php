@@ -4,7 +4,7 @@
  * El cliente paga desde Chivo y envía el comprobante; la secretaria lo verifica y procesa el pedido.
  * El pedido queda "En espera" y las piezas reservadas hasta confirmar el pago.
  *
- * Wompi y PayPal se instalan con sus plugins oficiales cuando tengan las credenciales.
+ * El pago con tarjeta (Wompi) está en wompi.php. PayPal queda pendiente.
  */
 
 defined( 'ABSPATH' ) || exit;

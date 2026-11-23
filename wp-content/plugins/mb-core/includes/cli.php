@@ -392,8 +392,12 @@ class MB_CLI {
 
 		$this->ajustes_pasarela( 'mb_chivo', array( 'enabled' => 'yes' ) );
 
-		update_option( 'woocommerce_gateway_order', array( 'mb_chivo' => 2, 'bacs' => 1, 'cod' => 3 ) );
-		WP_CLI::log( '✔ Pagos: transferencia, Chivo Wallet y pago al retirar (Wompi y PayPal se agregan con sus credenciales)' );
+		// Wompi queda activado, pero solo aparece en el pago cuando tiene App ID y API Secret
+		// (en WooCommerce → Ajustes → Pagos → Wompi, o en las variables WOMPI_APP_ID y WOMPI_API_SECRET).
+		$this->ajustes_pasarela( 'mb_wompi', array( 'enabled' => 'yes' ) );
+
+		update_option( 'woocommerce_gateway_order', array( 'mb_wompi' => 0, 'bacs' => 1, 'mb_chivo' => 2, 'cod' => 3 ) );
+		WP_CLI::log( '✔ Pagos: tarjeta con Wompi (al poner sus credenciales), transferencia, Chivo Wallet y pago al retirar' );
 	}
 
 	private function ajustes_pasarela( string $id, array $valores ): void {
