@@ -107,3 +107,11 @@ add_action( 'woocommerce_before_shop_loop', static function (): void {
 	}
 	echo '<div class="mb-tienda-filtros">' . do_shortcode( '[mb_buscador]' ) . do_shortcode( '[mb_marcas]' ) . '</div>';
 }, 5 );
+
+/* ---------- Página de Reparaciones: diseño propio a ancho completo ---------- */
+add_filter( 'body_class', static function ( array $clases ): array {
+	if ( is_page( 'reparaciones' ) ) {
+		$clases[] = 'mb-reparaciones';
+	}
+	return $clases;
+} );

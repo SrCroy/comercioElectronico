@@ -14,6 +14,14 @@ class MB_CLI {
 	/** Si es true, se reescriben páginas, menú e imágenes de categorías. */
 	private bool $rehacer = false;
 
+	/**
+	 * Versión del contenido de cada página de contenido/*.html (las que no están valen 1).
+	 * Súbela al cambiar el archivo para que `wp mb instalar` (en cada despliegue) la reescriba en el servidor.
+	 */
+	private const VERSION_PAGINAS = array(
+		'reparaciones' => 2,
+	);
+
 	/** Imagen de cada producto de ejemplo (en assets/productos del tema). */
 	private const IMAGENES_DEMO = array(
 		'Pantalla iPhone 13 OLED'                     => 'pantalla-oled.jpg',
@@ -454,7 +462,10 @@ class MB_CLI {
 		);
 		foreach ( $paginas as $slug => $titulo ) {
 			$existente = get_page_by_path( $slug );
-			if ( $existente && ! $this->rehacer ) {
+			// Una página con versión nueva en VERSION_PAGINAS se reescribe una vez en cada servidor, sin --rehacer.
+			$version   = self::VERSION_PAGINAS[ $slug ] ?? 1;
+			$vieja     = $existente && $version > 1 && (int) get_post_meta( $existente->ID, '_mb_version_contenido', true ) < $version;
+			if ( $existente && ! $this->rehacer && ! $vieja ) {
 				continue;
 			}
 			// Una página hecha en Elementor solo se reemplaza con: wp mb portada --rehacer
@@ -484,6 +495,14 @@ class MB_CLI {
 				'post_name'    => $slug,
 				'post_content' => $contenido,
 			) );
+			if ( $id && ! is_wp_error( $id ) ) {
+				update_post_meta( $id, '_mb_version_contenido', $version );
+			}
+			if ( 'reparaciones' === $slug && $id ) {
+				update_post_meta( $id, 'site-sidebar-layout', 'no-sidebar' );
+				update_post_meta( $id, 'ast-site-content-layout', 'normal-width-container' );
+				update_post_meta( $id, 'site-content-style', 'unboxed' );
+			}
 			if ( 'inicio' === $slug && $id ) {
 				update_post_meta( $id, 'site-post-title', 'disabled' );      // Astra: oculta el título
 				update_post_meta( $id, 'ast-title-bar-display', 'disabled' );

@@ -56,9 +56,9 @@
 
 ## 4. Diagnóstico **(propuesta)**
 
-**Diagnóstico gratis si el cliente aprueba la reparación.** Si la rechaza, se cobra:
+**El diagnóstico se cobra, pero si el cliente deja el equipo para reparar no se cobra.** Si decide no reparar y se lleva el equipo, se cobra:
 
-| Equipo | Costo si rechaza |
+| Equipo | Costo si se lleva el equipo sin reparar |
 |---|---|
 | Celular | $5 |
 | Laptop | $10 |

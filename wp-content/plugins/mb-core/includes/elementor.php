@@ -189,7 +189,7 @@ final class MB_Portada_Elementor {
 					), array( 'flex_justify_content' => 'center' ) ),
 					self::col( 44, array(
 						self::w( 'image', array( 'image' => self::img( 'elementor/hero-toro.png', 'Mechanical Bull' ), 'image_size' => 'full', '_css_classes' => 'mb-el-hero-img' ) ),
-						self::w( 'html', array( 'html' => '<div class="mb-flotante mb-flotante--1"><strong>Hasta 12 meses</strong><span>de garantía por escrito</span></div><div class="mb-flotante mb-flotante--2"><strong>Diagnóstico gratis</strong><span>si apruebas la reparación</span></div><div class="mb-flotante mb-flotante--3"><strong>Envíos</strong><span>a los 14 departamentos</span></div>', '_css_classes' => 'mb-el-flotantes' ) ),
+						self::w( 'html', array( 'html' => '<div class="mb-flotante mb-flotante--1"><strong>Hasta 12 meses</strong><span>de garantía por escrito</span></div><div class="mb-flotante mb-flotante--2"><strong>Diagnóstico gratis</strong><span>si dejas tu equipo para reparar</span></div><div class="mb-flotante mb-flotante--3"><strong>Envíos</strong><span>a los 14 departamentos</span></div>', '_css_classes' => 'mb-el-flotantes' ) ),
 					), array( 'flex_justify_content' => 'center', 'css_classes' => 'mb-el-hero-visual' ) ),
 				), array( 'flex_align_items' => 'center', 'flex_gap' => self::gap( 40 ) ) ),
 			), array(
@@ -287,7 +287,7 @@ final class MB_Portada_Elementor {
 					) ),
 					self::col( 45, array(
 						self::caja_icono( 'fas fa-comments', '1. Nos cuentas la falla', 'Por WhatsApp, con marca y modelo.', 'mb-el-paso' ),
-						self::caja_icono( 'fas fa-search', '2. Diagnóstico', 'Gratis si apruebas la reparación.', 'mb-el-paso' ),
+						self::caja_icono( 'fas fa-search', '2. Diagnóstico', 'Gratis si dejas tu equipo para reparar.', 'mb-el-paso' ),
 						self::caja_icono( 'fas fa-handshake', '3. Tú decides', 'No reparamos nada sin tu autorización.', 'mb-el-paso' ),
 						self::caja_icono( 'fas fa-check-circle', '4. Listo, con garantía', 'Retiras en el local o te lo enviamos.', 'mb-el-paso' ),
 					), array( 'flex_gap' => self::gap( 12 ) ) ),
