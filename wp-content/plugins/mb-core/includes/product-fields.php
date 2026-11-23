@@ -137,6 +137,27 @@ add_action( 'woocommerce_after_shop_loop_item_title', static function (): void {
 	}
 }, 15 );
 
+/**
+ * Producto sin "Imagen del producto" pero con fotos en la galería: la primera foto de la galería
+ * pasa a ser la imagen principal (tienda, carrito, página del producto) en vez de "Foto próximamente".
+ * Solo en contexto 'view': en el editor del producto los datos se ven tal como se guardaron.
+ */
+add_filter( 'woocommerce_product_get_image_id', static function ( $image_id, WC_Product $product ) {
+	if ( $image_id ) {
+		return $image_id;
+	}
+	$galeria = $product->get_gallery_image_ids( 'edit' );
+	return $galeria ? (int) reset( $galeria ) : $image_id;
+}, 10, 2 );
+
+add_filter( 'woocommerce_product_get_gallery_image_ids', static function ( $galeria, WC_Product $product ) {
+	// Si la primera foto ya se usa como imagen principal, no se repite en la galería.
+	if ( ! $product->get_image_id( 'edit' ) && is_array( $galeria ) && $galeria ) {
+		return array_slice( $galeria, 1 );
+	}
+	return $galeria;
+}, 10, 2 );
+
 /** Texto de disponibilidad claro para piezas por encargo. */
 add_filter( 'woocommerce_get_availability_text', static function ( string $text, WC_Product $product ): string {
 	if ( mb_es_encargo( $product ) && ( $product->is_on_backorder() || ! $product->is_in_stock() ) ) {
