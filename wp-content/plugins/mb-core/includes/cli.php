@@ -21,6 +21,7 @@ class MB_CLI {
 	private const VERSION_PAGINAS = array(
 		'reparaciones'          => 3,
 		'envios-y-devoluciones' => 2,
+		'garantias'             => 2,
 	);
 
 	/**
@@ -493,11 +494,12 @@ class MB_CLI {
 			}
 			$contenido = file_exists( "{$dir}{$slug}.html" ) ? (string) file_get_contents( "{$dir}{$slug}.html" ) : ''; // phpcs:ignore WordPress.WP.AlternativeFunctions
 			$contenido = str_replace(
-				array( '{{TIENDA}}', '{{REPARACIONES}}', '{{GARANTIAS}}', '{{CATEGORIAS}}', '{{ASSETS}}' ),
+				array( '{{TIENDA}}', '{{REPARACIONES}}', '{{GARANTIAS}}', '{{ENVIOS}}', '{{CATEGORIAS}}', '{{ASSETS}}' ),
 				array(
 					esc_url( get_permalink( wc_get_page_id( 'shop' ) ) ),
 					esc_url( home_url( '/reparaciones/' ) ),
 					esc_url( home_url( '/garantias/' ) ),
+					esc_url( home_url( '/envios-y-devoluciones/' ) ),
 					implode( ',', array_filter( array_map(
 						static fn( $slug ) => get_term_by( 'slug', $slug, 'product_cat' )->term_id ?? 0,
 						array( 'celulares', 'laptops', 'pc-de-escritorio-y-gamer', 'herramientas-y-accesorios' )
@@ -517,7 +519,7 @@ class MB_CLI {
 			if ( $id && ! is_wp_error( $id ) ) {
 				update_post_meta( $id, '_mb_version_contenido', $version );
 			}
-			if ( 'reparaciones' === $slug && $id ) {
+			if ( in_array( $slug, array( 'reparaciones', 'garantias' ), true ) && $id ) {
 				update_post_meta( $id, 'site-sidebar-layout', 'no-sidebar' );
 				update_post_meta( $id, 'ast-site-content-layout', 'normal-width-container' );
 				update_post_meta( $id, 'site-content-style', 'unboxed' );
