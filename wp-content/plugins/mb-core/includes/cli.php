@@ -638,6 +638,12 @@ class MB_CLI {
 	 */
 	private function cabecera(): void {
 		$astra = (array) get_option( 'astra-settings', array() );
+		// Corrección: el color del ícono de cuenta es un color simple en Astra (no por dispositivo);
+		// guardado como array causaba "Array to string conversion" en cada página.
+		if ( isset( $astra['header-account-icon-color'] ) && is_array( $astra['header-account-icon-color'] ) ) {
+			$astra['header-account-icon-color'] = '#0E0E0E';
+			update_option( 'astra-settings', $astra );
+		}
 		if ( ! empty( $astra['mb-cabecera-version'] ) && ! $this->rehacer ) {
 			WP_CLI::log( '✔ Cabecera (sin cambios: ya configurada)' );
 			return;
@@ -686,7 +692,7 @@ class MB_CLI {
 		$astra['header-account-login-style']   = 'icon';
 		$astra['header-account-logout-style']  = 'icon';
 		$astra['header-account-logout-action'] = 'link';
-		$astra['header-account-icon-color']    = array( 'desktop' => '#0E0E0E', 'tablet' => '#0E0E0E', 'mobile' => '#0E0E0E' );
+		$astra['header-account-icon-color']    = '#0E0E0E';
 		$astra['woo-header-cart-icon']         = 'cart';
 		$astra['woo-header-cart-badge-display'] = true;
 		$astra['woo-header-cart-icon-style']    = 'none';
