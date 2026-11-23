@@ -30,6 +30,11 @@ services:
       SMTP_USER: ${SMTP_USER:-}
       SMTP_PASSWORD: ${SMTP_PASSWORD:-}
       SMTP_FROM: ${SMTP_FROM:-}
+      # Verificación del teléfono por SMS/WhatsApp (opcional, ver docs/RAILWAY.md)
+      TWILIO_ACCOUNT_SID: ${TWILIO_ACCOUNT_SID:-}
+      TWILIO_AUTH_TOKEN: ${TWILIO_AUTH_TOKEN:-}
+      TWILIO_VERIFY_SID: ${TWILIO_VERIFY_SID:-}
+      TWILIO_CANAL: ${TWILIO_CANAL:-sms}
       WORDPRESS_CONFIG_EXTRA: |
         define('WP_ENVIRONMENT_TYPE', 'production');
         define('FS_METHOD', 'direct');

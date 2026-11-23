@@ -1047,3 +1047,39 @@ a:hover, a:focus { color: var(--mb-rojo); }
 	.mb-linea.mb-linea--3 { grid-template-columns: repeat(3, 1fr); max-width: 900px; margin-left: auto !important; margin-right: auto !important; }
 	.mb-linea--3::before { left: 16%; right: 16%; }
 }
+
+/* =========================================================
+   10. Mi cuenta: registro, verificación y contraseña
+   ========================================================= */
+.mb-campo-tel { display: flex; align-items: stretch; }
+.mb-campo-tel__pref { display: grid; place-items: center; padding: 0 12px; background: var(--mb-fondo); border: 1px solid var(--mb-gris-claro); border-right: 0; border-radius: var(--mb-radio-sm) 0 0 var(--mb-radio-sm); font-weight: 600; color: var(--mb-negro); }
+.mb-campo-tel input { border-top-left-radius: 0 !important; border-bottom-left-radius: 0 !important; flex: 1; min-width: 0; }
+.mb-registro-aviso, .mb-ayuda { display: block; font-size: .88rem; color: var(--mb-gris); margin: .4em 0 1em; }
+
+.mb-verificar { display: grid; gap: 16px; max-width: 640px; }
+.mb-verificar__intro { margin: 0; }
+.mb-verificar__paso { background: #fff; border: 1px solid var(--mb-gris-claro); border-radius: calc(var(--mb-radio) + 4px); padding: clamp(18px, 3vw, 26px); }
+.mb-verificar__paso.is-listo { background: #F1FBF4; border-color: rgba(37, 211, 102, .45); }
+.mb-verificar__cab { display: flex; align-items: center; gap: 14px; }
+.mb-verificar__cab h3 { font-size: 1.15rem; margin: 0 !important; }
+.mb-verificar__cab p { margin: 0; color: var(--mb-gris); word-break: break-all; }
+.mb-verificar__num { flex-shrink: 0; width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; background: var(--mb-negro); color: #fff; font-family: var(--mb-fuente-titulos); font-weight: 700; }
+.is-listo .mb-verificar__num { background: var(--mb-verde); }
+.mb-verificar__ok { display: inline-block; margin-left: auto; padding: 4px 10px; border-radius: 999px; background: var(--mb-verde); color: #fff; font-size: .78rem; font-weight: 700; }
+.mb-verificar__txt { margin: 14px 0 10px; font-size: .94rem; }
+.mb-verificar__form { display: flex; flex-wrap: wrap; gap: 10px; margin: 0; }
+.mb-verificar__form .input-text { flex: 1 1 180px; min-width: 0; }
+.mb-codigo { font-family: var(--mb-fuente-titulos); font-size: 1.5rem !important; letter-spacing: .4em; text-align: center; }
+.mb-verificar__extra { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 6px 22px; margin-top: 12px; }
+.mb-verificar__extra form { margin: 0; }
+.mb-verificar__extra details { flex: 1 1 100%; }
+.mb-verificar__extra details[open] .mb-verificar__form { margin-top: 10px; }
+.mb-enlace { background: none !important; border: 0 !important; padding: 0 !important; color: var(--mb-rojo) !important; font-weight: 600; font-size: .9rem; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; box-shadow: none !important; }
+.mb-enlace:hover { color: var(--mb-rojo-oscuro) !important; }
+details > summary.mb-enlace { list-style: none; display: inline; }
+details > summary.mb-enlace::-webkit-details-marker { display: none; }
+
+.mb-contrasena { max-width: 520px; }
+.mb-dato-cuenta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 12px 16px; background: var(--mb-fondo); border-radius: var(--mb-radio-sm); }
+.mb-dato-cuenta span:first-child { color: var(--mb-gris); }
+.mb-dato-cuenta .mb-verificar__ok { margin-left: 0; }

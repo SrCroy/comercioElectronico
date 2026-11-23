@@ -127,6 +127,35 @@ RESEND_API_KEY=re_xxxxxxxxxxxx
 MAIL_FROM=tienda@tudominio.com
 ```
 
+Los códigos para verificar el correo de las cuentas nuevas también salen por aquí: sin Resend
+los clientes no reciben el código y no pueden terminar su registro.
+
+---
+
+## Verificar el teléfono de los clientes (SMS o WhatsApp, opcional)
+
+Al registrarse, el cliente siempre verifica su **correo** con un código de 6 dígitos. Para que también
+verifique su **teléfono**, el código se envía con **Twilio Verify** (cobra por verificación; revisa
+el precio para El Salvador en twilio.com/verify/pricing).
+
+1. Crea una cuenta en https://www.twilio.com y agrega saldo.
+2. **Verify → Services → Create new** (nombre: Mechanical Bull). Activa el canal **SMS**
+   (o **WhatsApp**, que necesita un remitente de WhatsApp aprobado en Twilio).
+3. Copia el **Account SID** y el **Auth Token** (página principal de la consola) y el **Service SID**
+   del servicio de Verify (empieza con `VA`).
+4. En Railway, Variables del servicio, agrega:
+
+```
+TWILIO_ACCOUNT_SID=ACxxxxxxxxxxxxxxxx
+TWILIO_AUTH_TOKEN=xxxxxxxxxxxxxxxx
+TWILIO_VERIFY_SID=VAxxxxxxxxxxxxxxxx
+TWILIO_CANAL=sms
+```
+
+`TWILIO_CANAL` puede ser `sms` o `whatsapp`. Sin estas variables solo se verifica el correo y el
+teléfono queda guardado como "sin verificar". En **Usuarios** del panel, la columna *Verificación*
+muestra qué tiene verificado cada cliente.
+
 ---
 
 ## Tu propio dominio (ej. mechanicalbull.com)
