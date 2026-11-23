@@ -6,6 +6,10 @@
 #   - instala/actualiza la tienda sola en segundo plano (MB_AUTO_INSTALL=1)
 set -euo pipefail
 
+# Apache solo puede cargar un MPM; PHP (mod_php) necesita prefork. Evita el error AH00534.
+rm -f /etc/apache2/mods-enabled/mpm_event.* /etc/apache2/mods-enabled/mpm_worker.*
+[ -e /etc/apache2/mods-enabled/mpm_prefork.load ] || a2enmod -q mpm_prefork
+
 if [ -n "${PORT:-}" ] && [ "$PORT" != "80" ]; then
   sed -i "s/^Listen 80$/Listen ${PORT}/" /etc/apache2/ports.conf
   sed -i "s/<VirtualHost \*:80>/<VirtualHost *:${PORT}>/" /etc/apache2/sites-available/000-default.conf

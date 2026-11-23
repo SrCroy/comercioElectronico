@@ -11,8 +11,10 @@ RUN curl -fsSL -o /usr/local/bin/wp https://raw.githubusercontent.com/wp-cli/bui
     && chmod +x /usr/local/bin/wp
 ENV WP_CLI_CACHE_DIR=/tmp/wp-cli-cache
 
+# Apache solo puede cargar un MPM y PHP necesita prefork (en Railway llegaba a cargar dos: error AH00534)
 # Enlaces amigables (/producto/pantalla-iphone-13)
-RUN a2enmod rewrite
+RUN a2dismod -f mpm_event mpm_worker >/dev/null 2>&1 || true; \
+    a2enmod mpm_prefork rewrite
 
 # Tema y plugin dentro de la imagen (en Railway no hay carpetas montadas como en tu PC)
 COPY wp-content/themes/mechanical-bull /opt/mb/themes/mechanical-bull
