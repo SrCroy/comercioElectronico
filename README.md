@@ -78,7 +78,7 @@ docker compose exec -u www-data wordpress wp mb demo
 | Pagos | Transferencia bancaria · Chivo Wallet · Pago al retirar en tienda (solo con retiro) |
 | Facturación | En el pago se elige Factura o Crédito Fiscal (pide NIT, NRC, razón social y giro) |
 | Roles | Secretaria / Vendedor · Técnico · Cliente técnico · Cliente mayorista |
-| Correos | En tu PC se capturan en Mailpit (http://localhost:8025). En internet salen por Resend (Railway) o SMTP (VPS) |
+| Correos | En tu PC se capturan en Mailpit (http://localhost:8025). En internet salen por Brevo o Resend (Railway) o SMTP (VPS) |
 
 La tienda queda en modo **"Próximamente"**: solo la ves tú con sesión iniciada. Se quita en *WooCommerce → Ajustes → Visibilidad del sitio* cuando salga a internet.
 

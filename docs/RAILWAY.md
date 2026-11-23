@@ -111,10 +111,33 @@ Cuando esté lista: *WooCommerce → Ajustes → Visibilidad del sitio → En vi
 
 ---
 
-## Correos (pedidos, recuperar contraseña)
+## Correos (pedidos, códigos de verificación, recuperar contraseña)
 
-Railway **bloquea el SMTP** en los planes Free, Trial y Hobby, así que los correos se envían por la
-API de **Resend** (HTTPS). El plugin `mb-core` ya trae esto listo.
+Railway **bloquea el SMTP** en los planes Free, Trial y Hobby, así que los correos se envían por una
+API HTTPS: **Brevo** (sin dominio propio) o **Resend** (con dominio propio). El plugin `mb-core` trae
+los dos; si están las dos claves, se usa Resend.
+
+Los códigos para verificar el correo de las cuentas nuevas también salen por aquí: **sin uno de los
+dos, los clientes no reciben el código y no pueden terminar su registro.**
+
+### Opción A: Brevo con un Gmail (gratis, sin dominio)
+
+1. Crea una cuenta en https://www.brevo.com (gratis: 300 correos al día).
+2. **Remitentes, dominios e IP dedicadas → Remitentes → Añadir un remitente**: pon el Gmail de la
+   tienda y confírmalo con el enlace que te llega a ese Gmail.
+3. **SMTP y API → Claves API → Generar una nueva clave API** (empieza con `xkeysib-`).
+4. En Railway, Variables del servicio, agrega:
+
+```
+BREVO_API_KEY=xkeysib-xxxxxxxxxxxx
+MAIL_FROM=Mechanical Bull <tucorreo@gmail.com>
+```
+
+`MAIL_FROM` tiene que ser **exactamente** el remitente que verificaste en Brevo. Brevo revisa las
+cuentas nuevas: si los primeros correos no salen, mira en su panel si la cuenta está activada.
+Con un remitente Gmail algunos correos pueden caer en *Spam* al principio.
+
+### Opción B: Resend con dominio propio (lo más confiable)
 
 1. Crea una cuenta en https://resend.com (gratis: 3 000 correos/mes).
 2. **Domains → Add Domain** → tu dominio → copia los registros DNS que te da en el panel de tu dominio.
@@ -127,8 +150,8 @@ RESEND_API_KEY=re_xxxxxxxxxxxx
 MAIL_FROM=tienda@tudominio.com
 ```
 
-Los códigos para verificar el correo de las cuentas nuevas también salen por aquí: sin Resend
-los clientes no reciben el código y no pueden terminar su registro.
+Si un correo no sale, en los *Deploy Logs* aparece `Mechanical Bull: Brevo no pudo enviar el correo: ...`
+(o `Resend ...`) con el motivo.
 
 ---
 
@@ -222,5 +245,5 @@ su -s /bin/bash www-data -c "wp db export /tmp/respaldo.sql" && ls -lh /tmp/resp
 | Log: `no hay conexión con la base de datos` | Que el servicio MySQL se llame `MySQL` (o ajusta las variables) |
 | Log: `falta la variable ...` | Agrega esa variable en el Paso 6 |
 | Se pierden fotos/plugins al redesplegar | Falta el volumen en `/var/www/html/wp-content` |
-| No llegan correos | `RESEND_API_KEY`, `MAIL_FROM` y dominio verificado en Resend |
+| No llegan correos | `BREVO_API_KEY` o `RESEND_API_KEY`, y que `MAIL_FROM` esté verificado en ese proveedor; busca `no pudo enviar el correo` en los logs |
 | La página carga sin estilos o redirige mal | `SITE_URL` debe ser exactamente tu dirección con `https://` |
