@@ -23,6 +23,16 @@ class MB_CLI {
 		'envios-y-devoluciones' => 2,
 	);
 
+	/**
+	 * Versión de los ajustes generales de la tienda (opciones de WooCommerce, logo, ícono y colores de Astra).
+	 * Se aplican una sola vez en cada servidor, para no pisar lo que se cambie en el panel en cada despliegue.
+	 * Súbela solo si cambias esos valores en el código y quieres que se vuelvan a aplicar en el servidor.
+	 */
+	private const VERSION_AJUSTES = 1;
+
+	/** Si es true, en esta ejecución se aplican los ajustes generales (primera vez, versión nueva o --rehacer). */
+	private bool $ajustes = false;
+
 	/** Imagen de cada producto de ejemplo (en assets/productos del tema). */
 	private const IMAGENES_DEMO = array(
 		'Pantalla iPhone 13 OLED'                     => 'pantalla-oled.jpg',
@@ -50,6 +60,7 @@ class MB_CLI {
 	 */
 	public function instalar( array $args = array(), array $assoc = array() ): void {
 		$this->rehacer = ! empty( $assoc['rehacer'] );
+		$this->ajustes = $this->rehacer || (int) get_option( 'mb_version_ajustes', 0 ) < self::VERSION_AJUSTES;
 		$this->opciones();
 		$this->impuestos();
 		$this->envios();
@@ -59,6 +70,9 @@ class MB_CLI {
 		$this->menu();
 		$this->marca();
 		$this->cabecera();
+		if ( $this->ajustes ) {
+			update_option( 'mb_version_ajustes', self::VERSION_AJUSTES );
+		}
 		WP_CLI::success( 'Tienda Mechanical Bull configurada.' );
 	}
 
@@ -238,8 +252,12 @@ class MB_CLI {
 			'woocommerce_show_marketplace_suggestions' => 'no',
 			'woocommerce_allow_tracking'               => 'no',
 		);
-		foreach ( $opciones as $clave => $valor ) {
-			update_option( $clave, $valor );
+		if ( $this->ajustes ) {
+			foreach ( $opciones as $clave => $valor ) {
+				update_option( $clave, $valor );
+			}
+		} else {
+			WP_CLI::log( '· Ajustes generales ya aplicados: se respetan los cambios del panel (forzar con --rehacer)' );
 		}
 
 		// Solo en la primera instalación: no indexar y modo "Próximamente". Si después lo cambias, se respeta.
@@ -573,6 +591,9 @@ class MB_CLI {
 	}
 
 	private function marca(): void {
+		if ( ! $this->ajustes ) {
+			return;
+		}
 		$assets = get_stylesheet_directory() . '/assets/';
 
 		$logo = $this->importar_imagen( $assets . 'logo-horizontal.png', 'Logo Mechanical Bull' );

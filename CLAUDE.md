@@ -39,6 +39,8 @@ During local development the theme and plugin are **bind-mounted** into the cont
 
 If you add a new setting, put it in the matching `MB_CLI` private step rather than documenting a manual admin step.
 
+Store-wide settings (`opciones()`: WooCommerce options; `marca()`: logo, site icon, Astra colors) are applied **once per server**, tracked by the `mb_version_ajustes` option against `MB_CLI::VERSION_AJUSTES`, so a deploy never overwrites what the owner changed in wp-admin. To push a changed value in those steps to servers that are already installed, bump `VERSION_AJUSTES` (this re-applies all of them, overwriting panel edits to those settings). `--rehacer` also forces them. Everything else in `instalar` (taxes, shipping, gateways, pages, menu, header) was already non-destructive.
+
 **mb-core modules** (`mb-core.php` loads each one from `includes/`):
 - `negocio.php`: business contact data (`mb_dato()`, stored as `mb_*` options with code defaults), edited in Appearance → Customize → *Mechanical Bull*. It also holds the WhatsApp helpers (`mb_whatsapp_url()`, `mb_telefono_legible()`) and the shortcodes (`[mb_whatsapp]`, `[mb_telefono]`, `[mb_mapa]`, `[mb_buscador]`, `[mb_marcas]`, `[mb_topbar_whatsapp]`…). Any phone or WhatsApp number shown anywhere comes from `mb_dato('whatsapp')`.
 - `taxonomies.php`: `mb_compatible` (brand → model hierarchy, also used by search) and the part-quality taxonomy.
