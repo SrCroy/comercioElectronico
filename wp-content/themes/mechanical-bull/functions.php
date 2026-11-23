@@ -124,6 +124,37 @@ add_action( 'woocommerce_before_shop_loop', static function (): void {
 	echo '<div class="mb-tienda-filtros">' . do_shortcode( '[mb_buscador]' ) . do_shortcode( '[mb_marcas]' ) . '</div>';
 }, 5 );
 
+/* ---------- Tienda: "¿No encontraste tu producto?" debajo del listado ---------- */
+// Lleva a la sección de encargos de Garantías (50 % al pedir, 50 % al llegar; mayoreo con la administración).
+// Sale debajo de los productos (después de la paginación) y también cuando una búsqueda no encuentra nada.
+$mb_no_encontraste = static function (): void {
+	if ( ! function_exists( 'is_shop' ) ) {
+		return;
+	}
+	$busqueda = get_search_query();
+	$mensaje  = $busqueda
+		? sprintf( 'Hola Mechanical Bull, busqué "%s" en la tienda y no lo encontré. ¿Me lo pueden conseguir?', $busqueda )
+		: 'Hola Mechanical Bull, no encontré en la tienda esta pieza: ';
+	$whatsapp = function_exists( 'mb_whatsapp_url' )
+		? sprintf( '<a class="mb-boton mb-boton--whatsapp" href="%s" target="_blank" rel="noopener">Pedir por WhatsApp</a>', esc_url( mb_whatsapp_url( $mensaje ) ) )
+		: '';
+	?>
+	<section class="mb-no-encontraste">
+		<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 2a8 8 0 0 1 6.32 12.9l5.39 5.4-1.41 1.4-5.4-5.39A8 8 0 1 1 10 2zm0 2a6 6 0 1 0 0 12 6 6 0 0 0 0-12zm-1 2h2v3h3v2h-3v3H9v-3H6V9h3z"/></svg>
+		<div class="mb-no-encontraste__texto">
+			<h2>¿No encontraste tu producto?</h2>
+			<p>Te lo conseguimos por encargo: pagas el <strong>50 % al pedirlo</strong> y el <strong>50 % cuando llega</strong>. ¿Compras al por mayor? El precio lo acordamos directamente con la administración.</p>
+		</div>
+		<div class="mb-no-encontraste__botones">
+			<a class="mb-boton" href="<?php echo esc_url( home_url( '/garantias/#encargos' ) ); ?>">Cómo funcionan los encargos</a>
+			<?php echo $whatsapp; // phpcs:ignore WordPress.Security.EscapeOutput -- enlace armado arriba con esc_url(). ?>
+		</div>
+	</section>
+	<?php
+};
+add_action( 'woocommerce_after_shop_loop', $mb_no_encontraste, 20 );
+add_action( 'woocommerce_no_products_found', $mb_no_encontraste, 20 );
+
 /* ---------- Páginas de Reparaciones y Garantías: diseño propio a ancho completo ---------- */
 add_filter( 'body_class', static function ( array $clases ): array {
 	if ( is_page( array( 'reparaciones', 'garantias' ) ) ) {

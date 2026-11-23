@@ -21,7 +21,7 @@ class MB_CLI {
 	private const VERSION_PAGINAS = array(
 		'reparaciones'          => 3,
 		'envios-y-devoluciones' => 2,
-		'garantias'             => 2,
+		'garantias'             => 3,
 	);
 
 	/**

@@ -538,6 +538,26 @@ a:hover, a:focus { color: var(--mb-rojo); }
 .mb-tienda-filtros .mb-marcas { justify-content: flex-start; }
 .mb-tienda-filtros .mb-marca { padding: 7px 14px; font-size: .9rem; }
 
+/* "¿No encontraste tu producto?" debajo del listado de la tienda */
+.mb-no-encontraste {
+	clear: both;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 18px 24px;
+	margin: 36px 0 10px;
+	background: #FFF1F0;
+	border: 2px dashed rgba(255, 2, 0, .35);
+	border-radius: calc(var(--mb-radio) + 4px);
+	padding: clamp(20px, 3.5vw, 30px);
+}
+.mb-no-encontraste svg { flex-shrink: 0; width: 56px; height: 56px; padding: 13px; border-radius: 16px; background: var(--mb-rojo); fill: #fff; }
+.mb-no-encontraste__texto { flex: 1 1 320px; }
+.mb-no-encontraste h2 { font-size: clamp(1.25rem, 2.6vw, 1.6rem); margin: 0 0 .3em !important; }
+.mb-no-encontraste p { margin: 0; color: var(--mb-texto); }
+.mb-no-encontraste__botones { display: flex; flex-wrap: wrap; gap: 10px; }
+@media (max-width: 600px) { .mb-no-encontraste__botones, .mb-no-encontraste__botones .mb-boton { width: 100%; } }
+
 /* =========================================================
    7. Páginas de contenido
    ========================================================= */
