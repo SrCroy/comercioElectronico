@@ -20,7 +20,7 @@ require_once MB_CORE_DIR . 'includes/facturacion.php';
 require_once MB_CORE_DIR . 'includes/pagos.php';
 require_once MB_CORE_DIR . 'includes/taxonomies.php';
 require_once MB_CORE_DIR . 'includes/product-fields.php';
-require_once MB_CORE_DIR . 'includes/local-mail.php';
+require_once MB_CORE_DIR . 'includes/correo.php';
 require_once MB_CORE_DIR . 'includes/elementor.php';
 
 if ( defined( 'WP_CLI' ) && WP_CLI ) {

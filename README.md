@@ -3,7 +3,7 @@
 Tienda en línea de repuestos (celulares, laptops, PC/Gamer) con la marca Mechanical Bull.
 WordPress + WooCommerce en Docker, configurado para El Salvador (San Miguel, USD, IVA 13 %).
 
-> **Publicar en internet (VPS + GitHub + HTTPS):** ver [docs/DESPLIEGUE.md](docs/DESPLIEGUE.md).
+> **Publicar en internet:** en Railway ver [docs/RAILWAY.md](docs/RAILWAY.md) · en un VPS propio ver [docs/DESPLIEGUE.md](docs/DESPLIEGUE.md).
 
 ## Instalación
 
@@ -78,7 +78,7 @@ docker compose exec -u www-data wordpress wp mb demo
 | Pagos | Transferencia bancaria · Chivo Wallet · Pago al retirar en tienda (solo con retiro) |
 | Facturación | En el pago se elige Factura o Crédito Fiscal (pide NIT, NRC, razón social y giro) |
 | Roles | Secretaria / Vendedor · Técnico · Cliente técnico · Cliente mayorista |
-| Correos | Todos se capturan en Mailpit (http://localhost:8025), no llegan a clientes reales |
+| Correos | En tu PC se capturan en Mailpit (http://localhost:8025). En internet salen por Resend (Railway) o SMTP (VPS) |
 
 La tienda queda en modo **"Próximamente"**: solo la ves tú con sesión iniciada. Se quita en *WooCommerce → Ajustes → Visibilidad del sitio* cuando salga a internet.
 
@@ -133,6 +133,8 @@ docker compose down
 | `config/Caddyfile` | Dominio y HTTPS |
 | `scripts/actualizar.sh` | Actualiza el servidor desde GitHub |
 | `docs/DESPLIEGUE.md` | Guía para publicar en un VPS |
+| `railway.toml`, `docker/` | Configuración y arranque automático en Railway |
+| `docs/RAILWAY.md` | Guía para publicar en Railway |
 | `scripts/setup.sh` | Instalador completo |
 | `wp-content/themes/mechanical-bull` | Tema hijo de Astra con la marca |
 | `wp-content/plugins/mb-core` | Lógica de negocio (roles, compatibilidad, garantía, encargo, factura/CCF, Chivo, instalador) |
